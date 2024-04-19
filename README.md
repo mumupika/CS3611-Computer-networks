@@ -1,6 +1,6 @@
 Hw1: Contains the trial of playing with mininet.
 
-Hw2: We built a network topo by mininet. The topo is: 3 switches s1,s2,s3, and 4 hosts with h4 as server, h1,h2,h3 is client.
+Socket_programming: We built a network topo by mininet. The topo is: 3 switches s1,s2,s3, and 4 hosts with h4 as server, h1,h2,h3 is client.
     
 We have realized one time communication between the clients with server h4. 
 
