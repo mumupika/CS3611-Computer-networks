@@ -1,6 +1,6 @@
 import socket
 import time
-
+import sys
 
 def test(recv_socket):
     start=time.time()
@@ -17,8 +17,12 @@ def traceroute(hostaddr):
     udp=socket.getprotobyname('udp')
     ttl = 1
     while True:
-        recv_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
-        send_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM,udp)
+        try:
+            recv_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
+            send_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM,udp)
+        except PermissionError:
+            print("traceroute: Permission Denied. Please run in 'sudo' mode.")
+            exit(0)
         times=[]
         get_address=1
         print(ttl,end='  ')
@@ -63,22 +67,30 @@ def traceroute(hostaddr):
         if current_addr == dest_addr or ttl > max_hops:
             break
 
-hostname=input("Please input destination host name:\n")
-try:
-    hostaddr=socket.gethostbyname_ex(hostname)
-except socket.error:
-    print("traceroute: unknown host",hostname)
-    exit(0)
-if len(hostaddr[2])>1:
-    print("traceroute: Warning:",hostname,"has multiple addresses; using",hostaddr[2][0])
-    if hostaddr[0]!='':
-        print("traceroute to",hostaddr[0],f'({hostaddr[2][0]})',"64 hops max, 52 byte packets")
-    else:
-        print("traceroute to",hostname,f'({hostname})',"64 hops max, 52 byte packets")
-    traceroute(hostaddr[2][1])
-elif len(hostaddr[2])==1:
-    if hostaddr[0]!='':
-        print("traceroute to",hostaddr[0],f'({hostaddr[2][0]})',"64 hops max, 52 byte packets")
-    else:
-        print("traceroute to",hostname,f'({hostaddr[2][0]})',"64 hops max, 52 byte packets")
-    traceroute(hostaddr[2][0])
+def main():
+    #hostname=input("Please input destination host name:\n")
+    try:
+        hostname=sys.argv[1]
+    except IndexError:
+        print("traceroute: Please type the hostname correctly.")
+        exit(0)
+    try:
+        hostaddr=socket.gethostbyname_ex(hostname)
+    except socket.error:
+        print("traceroute: unknown host",hostname)
+        exit(0)
+    if len(hostaddr[2])>1:
+        print("traceroute: Warning:",hostname,"has multiple addresses; using",hostaddr[2][0])
+        if hostaddr[0]!='':
+            print("traceroute to",hostaddr[0],f'({hostaddr[2][0]})',"64 hops max, 52 byte packets")
+        else:
+            print("traceroute to",hostname,f'({hostname})',"64 hops max, 52 byte packets")
+        traceroute(hostaddr[2][1])
+    elif len(hostaddr[2])==1:
+        if hostaddr[0]!='':
+            print("traceroute to",hostaddr[0],f'({hostaddr[2][0]})',"64 hops max, 52 byte packets")
+        else:
+            print("traceroute to",hostname,f'({hostaddr[2][0]})',"64 hops max, 52 byte packets")
+        traceroute(hostaddr[2][0])
+
+main()
