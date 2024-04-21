@@ -8,3 +8,7 @@ First, run topo_struct.py under sudo mode. Then in the command line, use 'xterm 
 on h4. For a pair(ex, (h1,h2)), type one as 'send' and one as 'hear'. Then type as: "To h2:Hello". Then you can find the echos on h2 commandline window.
 
 We have achieved the continuous chat by running the above instructions and all problems listed on 4.19.2024 has been fixed.
+
+2024.4.22 We implemented a simple traceroute.
+
+Todo: To add time detection for it looks closer to the traceroute now using.
