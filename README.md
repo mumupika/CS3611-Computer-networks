@@ -11,4 +11,5 @@ We have achieved the continuous chat by running the above instructions and all p
 
 2024.4.22 We implemented a simple traceroute.
 
-Todo: To add time detection for it looks closer to the traceroute now using.
+2024.4.22 1:30 am: Fixed all problem and our traceroute is displaying like a real traceroute in linux(maybe)
+
